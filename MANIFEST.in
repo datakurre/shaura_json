@@ -1,0 +1,2 @@
+include *.rst *.txt *.py
+recursive-include shaura_json *.py *.zcml
