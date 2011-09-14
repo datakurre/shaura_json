@@ -27,11 +27,18 @@ def encode(obj):
     return simplejson.dumps(values(obj))
 
 
-def decode(dump, target_class=None):
+def decode(dump, target=None, target_class=None):
     data = simplejson.loads(dump)
     registry = get_current_registry()
 
     fields = {}
+
+    # collect all target's fields by their name
+    if target:
+        for interface in target.__provides__.interfaces():
+            for name in getFieldNamesInOrder(interface):
+                fields[name] = interface[name]
+
     # collect all target_class' fields by their name
     if target_class:
         for interface in target_class.__implemented__.interfaces():
